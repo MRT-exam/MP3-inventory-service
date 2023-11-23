@@ -1,7 +1,7 @@
 package com.MP3.inventoryservice.controller;
 
 import com.MP3.inventoryservice.dto.InventoryResponse;
-import com.MP3.inventoryservice.service.InventoryService;
+import com.MP3.inventoryservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +11,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inventory")
 @RequiredArgsConstructor
-public class InventoryController {
+public class ProductController {
 
-    private final InventoryService inventoryService;
+    private final ProductService productService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<InventoryResponse> isInStock(@RequestParam List<String> productName){
-        return inventoryService.isInStock(productName);
+    public List<InventoryResponse> quantityInStock(@RequestParam List<String> products){
+        return productService.quantityInStock(products);
     }
 
 }

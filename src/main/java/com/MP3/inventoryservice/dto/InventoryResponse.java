@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InventoryResponse {
     private String productName;
-    private boolean isInStock;
+    private int quantityInStock;
 
 }

@@ -11,13 +11,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Inventory {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String productName;
-    private int quantity;
-
-
+    private int quantityInStock;
+    private int price;
+    private String description;
 }
