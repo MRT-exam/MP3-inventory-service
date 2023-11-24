@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.annotation.KafkaListener;
 
 @SpringBootApplication
 public class InventoryServiceApplication {
@@ -13,7 +14,10 @@ public class InventoryServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(InventoryServiceApplication.class, args);
 	}
-
+	@KafkaListener(id = "updateStock", topics = "inventoryUpdateTopic")
+	public void listen(String data) {
+		
+	}
 
 	@Bean
 	public CommandLineRunner loadData(ProductRepository inventoryRepository){
