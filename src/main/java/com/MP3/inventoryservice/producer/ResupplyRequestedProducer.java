@@ -10,7 +10,7 @@ public class ResupplyRequestedProducer {
     private KafkaTemplate<String, ResupplyRequestedEvent> kafkaTemplate;
 
     public void produce(ResupplyRequestedEvent event) {
-        kafkaTemplate.send("inventoryRestockTopic", event);
+        kafkaTemplate.send("inventoryResupplyTopic", event);
     }
 }
 
