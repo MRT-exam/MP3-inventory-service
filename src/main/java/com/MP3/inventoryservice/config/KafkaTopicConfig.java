@@ -21,4 +21,12 @@ public class KafkaTopicConfig {
                 .replicas(1)
                 .build();
     }
+
+    @Bean
+    public NewTopic inventoryRestockTopic() {
+        return TopicBuilder.name("inventoryRestockTopic")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
 }

@@ -64,6 +64,8 @@ public class ProductService {
         resupplyRequestedProducer.produce(resupplyRequestedEvent);
     }
 
+
+
     private ResupplyProductDto mapToDto(Product product) {
         ResupplyProductDto resupplyProductDto = new ResupplyProductDto();
         resupplyProductDto.setId(product.getId());
