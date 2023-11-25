@@ -1,6 +1,7 @@
 package com.MP3.inventoryservice.config;
 
 import com.MP3.inventoryservice.Event.OrderPlacedEvent;
+import com.MP3.inventoryservice.Event.ResupplyDeliveryEvent;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -62,6 +63,25 @@ public class KafkaConsumerConfig {
         ConcurrentKafkaListenerContainerFactory<String, OrderPlacedEvent> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(orderPlacedConsumerFactory());
+        return factory;
+    }
+
+    public ConsumerFactory<String, ResupplyDeliveryEvent> resupplyDeliveryConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        return new DefaultKafkaConsumerFactory<>(props,
+                (Deserializer) new StringDeserializer(),
+                new JsonDeserializer<>(ResupplyDeliveryEvent.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ResupplyDeliveryEvent>
+    resupplyDeliveryKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ResupplyDeliveryEvent> factory
+                = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(resupplyDeliveryConsumerFactory());
         return factory;
     }
 }

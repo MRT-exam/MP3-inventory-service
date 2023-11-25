@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class ResupplyProductDto {
     private int id;
     private String productName;
-    private int quantityToRestock;
+    private int resupplyQuantity;
 }

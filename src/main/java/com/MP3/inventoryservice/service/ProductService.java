@@ -31,8 +31,8 @@ public class ProductService {
                 ).toList();
     }
 
-    // TODO: Refactor the updating of quantity and the check for resupply
-    public void updateInventoryStock(List<OrderedProductDto> orderedProductDtos) {
+    // TODO: Refactor the updating of quantity and then check for resupply
+    public void handleOrderedProducts(List<OrderedProductDto> orderedProductDtos) {
         // Retrieve ids of ordered products
         List<Integer> orderedProductsIds = orderedProductDtos
                 .stream()
@@ -47,31 +47,44 @@ public class ProductService {
         // Retrieve products in db that have been ordered
         List<Product> productsToBeUpdated = productRepository.findAllById(orderedProductsIds);
         // Update the quantities in stock for each of the products ordered
-        for (int i = 0; i < productsToBeUpdated.size(); i++) {
-            Product currentProduct = productsToBeUpdated.get(i);
+        destockProducts(productsToBeUpdated, quantitiesOrdered);
+        List<Product> updatedProducts = productRepository.saveAll(productsToBeUpdated);
+
+        // Check if there are products that should be resupplied
+        List<ResupplyProductDto> productsToResupply = updatedProducts.stream()
+                .filter(product -> product.getQuantityInStock() < 20)
+                .map(this::mapToDto)
+                .toList();
+
+        // Send ResupplyRequestedEvent to supplier-service
+        if (productsToResupply.size() > 0) {
+            ResupplyRequestedEvent resupplyRequestedEvent = new ResupplyRequestedEvent();
+            resupplyRequestedEvent.setProductsToResupply(productsToResupply);
+            resupplyRequestedProducer.produce(resupplyRequestedEvent);
+        }
+    }
+
+    public void restockProduct(int productId, int resupplyQuantity) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        product.setQuantityInStock(product.getQuantityInStock() + resupplyQuantity);
+        productRepository.save(product);
+    }
+
+    private void destockProducts(List<Product> products, List<Integer> quantitiesOrdered) {
+        for (int i = 0; i < products.size(); i++) {
+            Product currentProduct = products.get(i);
             currentProduct.setQuantityInStock(
                     currentProduct.getQuantityInStock()-quantitiesOrdered.get(i)
             );
         }
-        List<Product> updatedProducts = productRepository.saveAll(productsToBeUpdated);
-        // Add the products to be restocked to the ResupplyRequestedEvent
-        ResupplyRequestedEvent resupplyRequestedEvent = new ResupplyRequestedEvent();
-        updatedProducts
-                .stream()
-                .filter(product -> product.getQuantityInStock() < 20)
-                .map(this::mapToDto)
-                .forEachOrdered(resupplyRequestedEvent.getProductsToResupply()::add);
-        resupplyRequestedProducer.produce(resupplyRequestedEvent);
     }
-
-
 
     private ResupplyProductDto mapToDto(Product product) {
         ResupplyProductDto resupplyProductDto = new ResupplyProductDto();
         resupplyProductDto.setId(product.getId());
         resupplyProductDto.setProductName(product.getProductName());
         // Constant resupply of 20
-        resupplyProductDto.setQuantityToRestock(20);
+        resupplyProductDto.setResupplyQuantity(20);
         return resupplyProductDto;
     }
 }

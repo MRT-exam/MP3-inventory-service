@@ -19,6 +19,6 @@ public class OrderPlacedConsumer {
     public void consume(OrderPlacedEvent event) {
         // Call ProductService and update quantities in stock in DB
         List<OrderedProductDto> orderedProducts = event.getOrderedProductDtos();
-        productService.updateInventoryStock(orderedProducts);
+        productService.handleOrderedProducts(orderedProducts);
     }
 }
