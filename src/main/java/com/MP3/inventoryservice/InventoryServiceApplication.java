@@ -14,10 +14,6 @@ public class InventoryServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(InventoryServiceApplication.class, args);
 	}
-	@KafkaListener(id = "updateStock", topics = "inventoryUpdateTopic")
-	public void listen(String data) {
-		
-	}
 
 	@Bean
 	public CommandLineRunner loadData(ProductRepository inventoryRepository){
