@@ -19,7 +19,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value(value = "${spring.kafka.bootstrap-servers}")
+    @Value(value = "${SPRING_KAFKA_BOOTSTRAP_SERVERS}")
     private String bootstrapAddress;
 
     @Value(value = "inventory-service")
