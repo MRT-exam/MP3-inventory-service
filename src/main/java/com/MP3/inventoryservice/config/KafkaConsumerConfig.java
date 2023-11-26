@@ -22,7 +22,7 @@ public class KafkaConsumerConfig {
     @Value(value = "${SPRING_KAFKA_BOOTSTRAP_SERVERS}")
     private String bootstrapAddress;
 
-    @Value(value = "inventory-service")
+    @Value(value = "inventoryService")
     private String groupId;
 
     @Bean
