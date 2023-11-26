@@ -21,8 +21,8 @@ public class ProductService {
     private final ResupplyRequestedProducer resupplyRequestedProducer;
 
     @Transactional(readOnly = true)
-    public List<InventoryResponse> quantityInStock(List<String> productNames){
-        return productRepository.findByProductNameIn(productNames).stream()
+    public List<InventoryResponse> quantityInStock(List<String> productName){
+        return productRepository.findByProductNameIn(productName).stream()
                 .map(product ->
                     InventoryResponse.builder()
                             .productName(product.getProductName())
