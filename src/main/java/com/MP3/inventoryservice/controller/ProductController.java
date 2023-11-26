@@ -17,8 +17,8 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<InventoryResponse> quantityInStock(@RequestParam List<String> products){
-        return productService.quantityInStock(products);
+    public List<InventoryResponse> quantityInStock(@RequestParam List<String> productNames){
+        return productService.quantityInStock(productNames);
     }
 
 }
