@@ -7,6 +7,7 @@ import com.MP3.inventoryservice.dto.ResupplyProductDto;
 import com.fasterxml.jackson.databind.JsonSerializer;
 
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@RequiredArgsConstructor
 public class KafkaConsumerConfig {
 
     @Value(value = "${SPRING_KAFKA_BOOTSTRAP_SERVERS}")
