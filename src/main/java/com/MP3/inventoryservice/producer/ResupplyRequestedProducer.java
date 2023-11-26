@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ResupplyRequestedProducer {
 
     @Autowired
-    private KafkaTemplate<String, ResupplyRequestedEvent> kafkaTemplate;
+    private KafkaTemplate kafkaTemplate;
 
     public void produce(ResupplyRequestedEvent event) {
         kafkaTemplate.send("inventoryResupplyTopic", event);
