@@ -16,7 +16,7 @@ import java.util.List;
 public class ResupplyDeliveryConsumer {
     private final ProductService productService;
 
-    @KafkaListener(topics = "resupplyDeliveryTopic")
+    @KafkaListener(groupId = "inventoryService", topics = "resupplyDeliveryTopic")
     public void consume(ResupplyDeliveryEvent event) {
         // Call productService and update quantityInStock
         List<ResupplyProductDto> resupplyProductDtos = event.getResuppliedProductDtos();

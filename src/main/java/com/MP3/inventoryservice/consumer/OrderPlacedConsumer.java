@@ -15,7 +15,7 @@ public class OrderPlacedConsumer {
 
     private final ProductService productService;
 
-    @KafkaListener(topics = "inventoryUpdateTopic")
+    @KafkaListener(groupId = "inventoryService", topics = "inventoryUpdateTopic")
     public void consume(OrderPlacedEvent event) {
         // Call ProductService and update quantities in stock in DB
         List<OrderedProductDto> orderedProducts = event.getOrderedProductDtos();
